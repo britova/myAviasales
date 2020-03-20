@@ -6,26 +6,13 @@ const formSearch = document.querySelector('.form-search'),
     inputDateDepart = formSearch.querySelector('.input__date-depart');
 
 const citiesApi = 'http://api.travelpayouts.com/data/ru/cities.json',
+    priceCalendarApi = 'http://min-prices.aviasales.ru/calendar_preload',
     proxy = 'https://cors-anywhere.herokuapp.com/',
-    citiesData = 'dataBase/cities.json';
+    citiesData = 'dataBase/cities.json',
+    API_KEY = '70ada17966d2f40ab3c05a48876fe7c5';
 
-const city = [
-    'Москва',
-    'Санкт-Петербург',
-    'Новосибирск',
-    'Самара',
-    'Екатеринбург',
-    'Калининград',
-    'Уфа',
-    'Казань',
-    'Ростов-на-Дону',
-    'Магадан'
-];
+let city = [];
 
-
-// посмотреть использование fetch в гугле, его чаще испол-т
-// https://jsonplaceholder.typicode.com/
-// rest full api - получаем весь объект, с которым потом работает
 const getData = (url, callback) => {
     const request = new XMLHttpRequest();
 
@@ -46,6 +33,7 @@ const getData = (url, callback) => {
     request.send();
 };
 
+// выводим список городов по сопадениям
 const showCityList = (input, listContainer) => {
     listContainer.textContent = '';
 
@@ -53,19 +41,20 @@ const showCityList = (input, listContainer) => {
 
         const filterCity = city.filter((item) => {
             // если нужно, можем преобразовать возвращаемый item
-            const fixItem = item.toLowerCase();
+            const fixItem = item.name.toLowerCase();
             return fixItem.includes(input.value.toLowerCase()); // условие, если true -> filter return item
         });
 
         filterCity.forEach((item) => {
             const li = document.createElement('li');
             li.classList.add('dropdown__city');
-            li.textContent = item;
+            li.textContent = item.name;
             listContainer.append(li);
         });
     }
 };
 
+// нужный город кликаем в input, чистим список городов-совпадений
 const getCity = (input, listContainer) => {
 
     input.addEventListener('input', () => {
@@ -81,6 +70,7 @@ const getCity = (input, listContainer) => {
     });
 };
 
+// вводим данные для поиска городов откуда-куда
 const goInputCity = () => {
 
     const citiesInput = [
@@ -93,6 +83,7 @@ const goInputCity = () => {
         dropdownCitiesTo
     ];
 
+    // получаем список городов - совпадений
     citiesInput.forEach((input, listNum) => {
         getCity (input, citiesListContainer[listNum]);
     });
@@ -102,13 +93,11 @@ const goInputCity = () => {
 goInputCity();
 
 // функции
-/*
-getData(proxy + citiesApi, (data) => {
-    console.log(data);
-});
-*/
-
 getData(citiesData, (data) => {
+    city = JSON.parse(data).filter(item => item.name);
+});
+
+getData(proxy + priceCalendarApi + '?origin=SVX&destination=KGD&depart_date=2020-05-25&one_way=true&token=' + API_KEY, (data) => {
     console.log(data);
 });
 
