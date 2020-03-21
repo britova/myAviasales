@@ -191,6 +191,7 @@ const renderSearchDay = (cheapTicketDay) => {
 // самые дешевые на другие даты
 const renderSearchPeriod = (tickets) => {
     otherCheapTickets.style.display = 'block';
+    cheapestTicket.style.color = 'white';
     otherCheapTickets.innerHTML = '<h2>Самые дешевые билеты на другие даты</h2>';
     tickets.sort((a, b) => a.value - b.value);
 
