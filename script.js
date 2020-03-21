@@ -178,6 +178,7 @@ const createCard = (data) => {
 // самый дешевый билет на дату
 const renderSearchDay = (cheapTicketDay) => {
     cheapestTicket.style.display = 'block';
+    cheapestTicket.style.color = 'white';
     cheapestTicket.innerHTML = '<h2>Самый дешевый билет на выбранную дату</h2>';
 
     if (cheapTicketDay.length) {
@@ -191,7 +192,6 @@ const renderSearchDay = (cheapTicketDay) => {
 // самые дешевые на другие даты
 const renderSearchPeriod = (tickets) => {
     otherCheapTickets.style.display = 'block';
-    cheapestTicket.style.color = 'white';
     otherCheapTickets.innerHTML = '<h2>Самые дешевые билеты на другие даты</h2>';
     tickets.sort((a, b) => a.value - b.value);
 
